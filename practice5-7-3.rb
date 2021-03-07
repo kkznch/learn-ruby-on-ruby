@@ -5,6 +5,7 @@ def evaluate(tree, env)
   when 'lit'
     tree[1]
   when '+'
+    env['plus_count'] += 1
     evaluate(tree[1], env) + evaluate(tree[2], env)
   when '-'
     evaluate(tree[1], env) - evaluate(tree[2], env)
@@ -26,6 +27,8 @@ def evaluate(tree, env)
     env[tree[1]] = evaluate(tree[2], env)
   when 'var_ref'
     env[tree[1]]
+  else
+    pp(tree)
   end
 end
 
@@ -33,7 +36,10 @@ str = minruby_load()
 
 tree = minruby_parse(str)
 
-env = {}
+env = {
+  'plus_count' => 0
+}
 evaluate(tree, env)
 
+pp(env)
 
